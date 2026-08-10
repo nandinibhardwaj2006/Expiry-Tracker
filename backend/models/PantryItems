@@ -1,0 +1,11 @@
+const mongoose = require("mongoose");
+const Pantry = new mongoose.Schema({
+  name: {type: String, required: true},
+  expiryDate: {type: Date, required: true},
+  numberOfPackets: {type: Number, required: true},
+  quantity: {type: Number, required: true},
+  unit: {type: String, required: true}
+});
+
+const PantryItem = mongoose.model("PantryItem", Pantry);
+module.exports = PantryItem;
