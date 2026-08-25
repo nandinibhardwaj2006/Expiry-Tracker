@@ -49,7 +49,7 @@ function App() {
   };
 
   const handleSubmit = () => {
-    fetch(`${import.meta.env.VITE_API_URL}/api/${mode}`, {,
+    fetch(`${import.meta.env.VITE_API_URL}/api/${mode}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(form)
