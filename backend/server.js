@@ -5,7 +5,9 @@ const mongoose = require("mongoose");
 const PantryItem = require("./models/PantryItems");
 const MedicineItem = require("./models/MedicineItems");
 const app = express();
-app.use(cors());
+app.use(cors({
+  origin: "https://expiry-tracker-sand.vercel.app"
+}));
 app.use(express.json());
 
 const PORT = 3000;
