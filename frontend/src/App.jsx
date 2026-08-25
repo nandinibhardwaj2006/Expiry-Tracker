@@ -34,7 +34,7 @@ function App() {
   });
 
   const fetchItems = () => {
-    fetch(`http://localhost:3000/api/${mode}`)
+    fetch(`${import.meta.env.VITE_API_URL}`)
       .then((res) => res.json())
       .then((data) => setItems(data))
       .catch((err) => console.error(err));
@@ -49,7 +49,7 @@ function App() {
   };
 
   const handleSubmit = () => {
-    fetch(`http://localhost:3000/api/${mode}`, {
+    fetch(`${import.meta.env.VITE_API_URL}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(form)
@@ -63,7 +63,7 @@ function App() {
   };
 
   const handleDelete = (id) => {
-    fetch(`http://localhost:3000/api/${mode}/${id}`, {
+    fetch(`${import.meta.env.VITE_API_URL}`, {
       method: "DELETE"
     })
       .then(() => fetchItems())
