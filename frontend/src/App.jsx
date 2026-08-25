@@ -34,7 +34,7 @@ function App() {
   });
 
   const fetchItems = () => {
-    fetch(`${import.meta.env.VITE_API_URL}`)
+    fetch(`${import.meta.env.VITE_API_URL}/api/${mode}`)
       .then((res) => res.json())
       .then((data) => setItems(data))
       .catch((err) => console.error(err));
@@ -49,7 +49,7 @@ function App() {
   };
 
   const handleSubmit = () => {
-    fetch(`${import.meta.env.VITE_API_URL}`, {
+    fetch(`${import.meta.env.VITE_API_URL}/api/${mode}`, {,
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(form)
@@ -63,7 +63,7 @@ function App() {
   };
 
   const handleDelete = (id) => {
-    fetch(`${import.meta.env.VITE_API_URL}`, {
+    fetch(`${import.meta.env.VITE_API_URL}/api/${mode}/${id}`, {
       method: "DELETE"
     })
       .then(() => fetchItems())
