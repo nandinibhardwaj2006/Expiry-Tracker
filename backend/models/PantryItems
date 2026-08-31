@@ -4,7 +4,12 @@ const Pantry = new mongoose.Schema({
   expiryDate: {type: Date, required: true},
   numberOfPackets: {type: Number, required: true},
   quantity: {type: Number, required: true},
-  unit: {type: String, required: true}
+  unit: {type: String, required: true},
+  userId: {
+  type: mongoose.Schema.Types.ObjectId,
+  ref: "User",
+  required: true
+  }
 });
 
 const PantryItem = mongoose.model("PantryItem", Pantry);

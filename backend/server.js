@@ -5,10 +5,16 @@ const mongoose = require("mongoose");
 const PantryItem = require("./models/PantryItems");
 const MedicineItem = require("./models/MedicineItems");
 const app = express();
+const authRoutes = require("./routes/auth");
+const protect = require("./middleware/authMiddleware");
 app.use(cors({
-  origin: "https://expiry-tracker-sand.vercel.app"
+  origin: [
+    "https://expiry-tracker-sand.vercel.app",
+    "http://localhost:5173"
+  ]
 }));
 app.use(express.json());
+app.use("/api/auth", authRoutes);
 
 const PORT = process.env.PORT || 3000;
 const MongoURI = process.env.MONGO_URI;
@@ -18,9 +24,9 @@ mongoose.connect(MongoURI)
   .catch((err) => console.log("Connection error", err));
 
 //API Routes for Pantry Items
-app.get("/api/pantry", async (req, res) => {
+app.get("/api/pantry", protect, async (req, res) => {
   try {
-    const items = await PantryItem.find();
+    const items = await PantryItem.find({ userId: req.user.userId });
     res.json(items);
   } catch (error) {
     console.error("Error fetching items:", error);
@@ -28,9 +34,9 @@ app.get("/api/pantry", async (req, res) => {
   }
 });
 
-app.post("/api/pantry", async (req, res) => {
+app.post("/api/pantry", protect, async (req, res) => {
   try {
-    const newItem = await PantryItem.create(req.body);
+    const newItem = await PantryItem.create({ ...req.body, userId: req.user.userId });
     res.status(201).json(newItem);
   } catch (error) {
     console.error("Error creating item:", error);
@@ -38,9 +44,9 @@ app.post("/api/pantry", async (req, res) => {
   }
 });
 
-app.delete("/api/pantry/:id", async (req, res) => {
+app.delete("/api/pantry/:id", protect, async (req, res) => {
   try {
-    const deletedItem = await PantryItem.findByIdAndDelete(req.params.id);
+    const deletedItem = await PantryItem.findOneAndDelete({ _id: req.params.id, userId: req.user.userId });
 
     if (!deletedItem) {
       return res.status(404).json({ error: "Item not found" });
@@ -53,10 +59,10 @@ app.delete("/api/pantry/:id", async (req, res) => {
   }
 });
 
-app.put("/api/pantry/:id", async (req, res) => {
+app.put("/api/pantry/:id", protect, async (req, res) => {
   try {
     const updatedItem = await PantryItem.findByIdAndUpdate(
-      req.params.id,
+      { _id: req.params.id, userId: req.user.userId },
       req.body,
       { new: true, runValidators: true }
     );
@@ -73,9 +79,9 @@ app.put("/api/pantry/:id", async (req, res) => {
 });
 
 //API Routes for Medicine Items
-app.get("/api/medicine", async (req, res) => {
+app.get("/api/medicine", protect, async (req, res) => {
   try {
-    const items = await MedicineItem.find();
+    const items = await MedicineItem.find({ userId: req.user.userId });
     res.json(items);
   } catch (error) {
     console.error("Error fetching medicine items:", error);
@@ -83,9 +89,9 @@ app.get("/api/medicine", async (req, res) => {
   }
 });
 
-app.post("/api/medicine", async (req, res) => {
+app.post("/api/medicine", protect, async (req, res) => {
   try {
-    const newItem = await MedicineItem.create(req.body);
+    const newItem = await MedicineItem.create({ ...req.body, userId: req.user.userId });
     res.status(201).json(newItem);
   } catch (error) {
     console.error("Error creating medicine item:", error);
@@ -93,10 +99,10 @@ app.post("/api/medicine", async (req, res) => {
   }
 });
 
-app.put("/api/medicine/:id", async (req, res) => {
+app.put("/api/medicine/:id", protect, async (req, res) => {
   try {
     const updatedItem = await MedicineItem.findByIdAndUpdate(
-      req.params.id,
+      { _id: req.params.id, userId: req.user.userId },
       req.body,
       { new: true, runValidators: true }
     );
@@ -110,9 +116,9 @@ app.put("/api/medicine/:id", async (req, res) => {
   }
 });
 
-app.delete("/api/medicine/:id", async (req, res) => {
+app.delete("/api/medicine/:id", protect, async (req, res) => {
   try {
-    const deletedItem = await MedicineItem.findByIdAndDelete(req.params.id);
+    const deletedItem = await MedicineItem.findOneAndDelete({ _id: req.params.id, userId: req.user.userId });
     if (!deletedItem) {
       return res.status(404).json({ error: "Item not found" });
     }

@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
+import Login from "./login";
 
 function getUrgencyColor(expiryDate) {
   const today = new Date();
@@ -23,6 +24,10 @@ function getDaysUntilExpiry(expiryDate) {
 }
 
 function App() {
+  const [isLoggedIn, setIsLoggedIn] = useState(
+    !!localStorage.getItem("token")
+  );
+
   const [mode, setMode] = useState("pantry"); // "pantry" or "medicine"
   const [items, setItems] = useState([]);
   const [form, setForm] = useState({
@@ -34,15 +39,19 @@ function App() {
   });
 
   const fetchItems = () => {
-    fetch(`${import.meta.env.VITE_API_URL}/api/${mode}`)
+    fetch(`${import.meta.env.VITE_API_URL}/api/${mode}`,{headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }})
       .then((res) => res.json())
-      .then((data) => setItems(data))
+      .then((data) => {
+        setItems(Array.isArray(data) ? data : []);
+      })
       .catch((err) => console.error(err));
   };
 
   useEffect(() => {
-    fetchItems();
-  }, [mode]);
+    if (isLoggedIn) {
+      fetchItems();
+    }
+  }, [mode, isLoggedIn]);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -51,7 +60,7 @@ function App() {
   const handleSubmit = () => {
     fetch(`${import.meta.env.VITE_API_URL}/api/${mode}`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "application/json", Authorization: `Bearer ${localStorage.getItem("token")}` },
       body: JSON.stringify(form)
     })
       .then((res) => res.json())
@@ -64,16 +73,30 @@ function App() {
 
   const handleDelete = (id) => {
     fetch(`${import.meta.env.VITE_API_URL}/api/${mode}/${id}`, {
-      method: "DELETE"
+      method: "DELETE",
+      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
     })
       .then(() => fetchItems())
       .catch((err) => console.error(err));
   };
 
+  if (!isLoggedIn) {
+  return <Login onLogin={() => setIsLoggedIn(true)} />;
+  }
+
   return (
     <div className="min-h-screen p-6">
       <h2 className="text-3xl font-['Plus_Jakarta_Sans'] font-bold text-center mb-6 outline-black">Pantry & Medicine Tracker</h2>
-
+      <div className="flex justify-center mb-6">
+      <Button
+        onClick={() => {
+          localStorage.removeItem("token");
+          setItems([]);
+          setIsLoggedIn(false);
+        }
+      }
+      >Logout</Button>
+      </div>
       <div className="flex justify-center gap-3 mb-6 font-sans">
         <Button
           onClick={() => setMode("pantry")}
