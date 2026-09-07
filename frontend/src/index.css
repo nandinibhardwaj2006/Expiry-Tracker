@@ -47,11 +47,11 @@
 }
 
 :root {
-    --background: oklch(65.75% 0.09767 326.58 / 0.735);
-    --foreground: oklch(81.295% 0.02194 241.544); /*default text color*/
-    --card: oklch(0% 0 0 / 0.356);
+    --background: oklch(97% 0.158 108.2);
+    --foreground: oklch(9.126% 0.01898 233.535); /*default text color*/
+    --card: oklch(86.666% 0.05363 232.838);
     --card-foreground: oklch(1 0 0); /*default text color on card*/
-    --primary: oklch(65.731% 0.08511 302.105 / 0.553);
+    --primary: oklch(65.525% 0.10286 216.368 / 0.632);
     --primary-foreground: oklch(12.212% 0.00001 271.152);
     --muted-foreground: oklch(1 0 0); /*text color on muted background*/
     --secondary: oklch(13.452% 0.00784 18.066); 
@@ -61,8 +61,38 @@
     --destructive: oklch(0.577 0.245 27.325);
     --border: oklch(17.866% 0.06729 336.412);
     --input: oklch(17.866% 0.06729 336.412);
-    --ring: oklch(43.602% 0.18978 324.125);
+    --ring: oklch(84.75% 0.05415 251.948);
     --radius: 0.625rem;
+}
+
+.dark {
+  --background: 222.2 84% 4.9%;
+  --foreground: 210 40% 98%;
+
+  --card: 222.2 84% 4.9%;
+  --card-foreground: 210 40% 98%;
+
+  --popover: 222.2 84% 4.9%;
+  --popover-foreground: 210 40% 98%;
+
+  --primary: 210 40% 98%;
+  --primary-foreground: 222.2 47.4% 11.2%;
+
+  --secondary: 217.2 32.6% 17.5%;
+  --secondary-foreground: 210 40% 98%;
+
+  --muted: 217.2 32.6% 17.5%;
+  --muted-foreground: 215 20.2% 65.1%;
+
+  --accent: 217.2 32.6% 17.5%;
+  --accent-foreground: 210 40% 98%;
+
+  --destructive: 0 62.8% 30.6%;
+  --destructive-foreground: 210 40% 98%;
+
+  --border: 217.2 32.6% 17.5%;
+  --input: 217.2 32.6% 17.5%;
+  --ring: 212.7 26.8% 83.9%;
 }
 
 @layer base {
@@ -70,7 +100,7 @@
     @apply border-border outline-ring/50;
     }
   body {
-    background: linear-gradient(to bottom, oklch(15.416% 0.07492 268.886 / 0.888), oklch(13.53% 0.05962 315.896));
+    @apply bg-background text-foreground;
     @apply text-foreground;
     }
   html {

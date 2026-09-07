@@ -93,8 +93,8 @@ function App() {
           localStorage.removeItem("token");
           setItems([]);
           setIsLoggedIn(false);
-        }
-      }
+        }}
+        className="bg-red-500 text-white hover:bg-red-400"
       >Logout</Button>
       </div>
       <div className="flex justify-center gap-3 mb-6 font-sans">
@@ -102,8 +102,8 @@ function App() {
           onClick={() => setMode("pantry")}
           className={
             mode === "pantry"
-              ? "bg-black/50 text-white border border-black"
-              : "bg-black/50 text-slate-400 border-0"
+              ? "bg-slate-500 text-white border border-white"
+              : "bg-slate-500 text-slate-400 border-0"
           }
         >
           Pantry
@@ -112,22 +112,22 @@ function App() {
           onClick={() => setMode("medicine")}
           className={
             mode === "medicine"
-              ? "bg-black/50 text-white border-1 border-black"
-              : "bg-black/50 text-slate-400 border-0"
+              ? "bg-slate-500 text-white border border-black"
+              : "bg-slate-500 text-slate-400 border-0"
           }
         >
           Medicine
         </Button>
       </div>
 
-      <Card className="max-w-2xl mx-auto mb-6 shadow-2xl shadow-pink-950/60">
-        <CardContent className="flex flex-wrap gap-3 p-4">
-          <Input name="name" placeholder="Name" value={form.name} onChange={handleChange} className="border-white/10" />
-          <Input name="expiryDate" placeholder="Expiry Date" type="date" value={form.expiryDate} onChange={handleChange} className="border-white/10" />
-          <Input name="numberOfPackets" type="number" placeholder="Number of Packs" value={form.numberOfPackets} onChange={handleChange} className="border-white/10" />
-          <Input name="quantity" type="number" placeholder="Quantity per pack" value={form.quantity} onChange={handleChange} className="border-white/10" />
-          <Input name="unit" placeholder="Unit (g, ml, tablets)" value={form.unit} onChange={handleChange} className="border-white/10" />
-          <Button onClick={handleSubmit}>Add Item</Button>
+      <Card className="max-w-2xl mx-auto mb-6 shadow-2xl bg-sky-100 shadow-orange-950/60">
+        <CardContent className="flex flex-wrap gap-3 p-4 text-black">
+          <Input name="name" placeholder="Name" value={form.name} onChange={handleChange} className="border-white/10 placeholder:text-black" />
+          <Input name="expiryDate" placeholder="Expiry Date" type="date" value={form.expiryDate} onChange={handleChange} className="border-white/10 placeholder:text-black" />
+          <Input name="numberOfPackets" type="number" placeholder="Number of Packs" value={form.numberOfPackets} onChange={handleChange} className="border-white/10 placeholder:text-black" />
+          <Input name="quantity" type="number" placeholder="Quantity per pack" value={form.quantity} onChange={handleChange} className="border-white/10 placeholder:text-black" />
+          <Input name="unit" placeholder="Unit (g, ml, tablets)" value={form.unit} onChange={handleChange} className="border-white/10 placeholder:text-black" />
+          <Button onClick={handleSubmit} className="text-white">Add Item</Button>
         </CardContent>
       </Card>
 
